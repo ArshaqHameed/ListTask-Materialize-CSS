@@ -44,7 +44,7 @@ function addTask(e){
 // function remoevTask
 function removeTask(e){
     if(e.target.parentElement.classList.contains('delete-item')){
-        if(confirm('Are you sure,you want to delete the Item ?'))
+        if(confirm('Are you sure,you want to delete the Item ?',e.target.parentElement.parentElement.value))
         {
             e.target.parentElement.parentElement.remove();
         }
@@ -61,4 +61,17 @@ function clearTasks(e){
     }
 }
 
-// 
+// for filter functions
+function filterTasks(e){
+    const text = e.target.value.toLowerCase();
+    console.log(text);
+    document.querySelectorAll('.collection-item').forEach(function(task){
+        const item = task.firstChild.textContent;
+        if(item.toLowerCase().indexOf(text) != -1){
+            task.style.display = 'block';
+        }
+        else{
+            task.style.display = 'none';
+        }
+    })
+}
