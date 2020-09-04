@@ -10,7 +10,14 @@ const taskInput = document.querySelector('#task');
 loadEventListeners();
 
 function loadEventListeners(){
+    // add list.
     form.addEventListener('submit',addTask);
+    // remove task
+    taskList.addEventListener('click',removeTask);
+    // FOR ALL CLEAR
+    clearBtn.addEventListener('click',clearTasks)
+    // eventlisterner for filter
+    filter.addEventListener('keyup',filterTasks);
 }
 
 function addTask(e){
@@ -33,3 +40,25 @@ function addTask(e){
     taskInput.value ='';
     e.preventDefault();
 }
+
+// function remoevTask
+function removeTask(e){
+    if(e.target.parentElement.classList.contains('delete-item')){
+        if(confirm('Are you sure,you want to delete the Item ?'))
+        {
+            e.target.parentElement.parentElement.remove();
+        }
+    }
+}
+
+//clearTasks function
+function clearTasks(e){
+    // taskList.innerHTML = '';
+    // Fater method using while loop
+
+    while(taskList.firstChild){
+        taskList.removeChild(taskList.firstChild);
+    }
+}
+
+// 
