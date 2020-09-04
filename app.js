@@ -10,6 +10,9 @@ const taskInput = document.querySelector('#task');
 loadEventListeners();
 
 function loadEventListeners(){
+
+    // load DOMContent from storage
+    document.addEventListener('DOMContentLoaded',getTasks);
     // add list.
     form.addEventListener('submit',addTask);
     // remove task
@@ -18,6 +21,32 @@ function loadEventListeners(){
     clearBtn.addEventListener('click',clearTasks)
     // eventlisterner for filter
     filter.addEventListener('keyup',filterTasks);
+}
+
+
+// DOMContentLoaded function
+function getTasks(e){
+    let tasks;
+    if(localStorage.getItem('tasks') === null){
+        tasks = [];
+    }
+    else{
+        tasks = JSON.parse(localStorage.getItem('tasks'));
+    }
+
+    // loop throgh the items
+    tasks.forEach(function(task){
+        const li = document.createElement('li');
+        li.className = 'collection-item';
+        li.appendChild(document.createTextNode(task));
+
+        // create a link
+        const link = document.createElement('a');
+        link.className = 'delete-item secondary-content'; 
+        link.innerHTML = '<i class="fa fa-remove"></i>';
+        li.appendChild(link);
+        taskList.appendChild(li);
+    })
 }
 
 function addTask(e){
@@ -37,6 +66,9 @@ function addTask(e){
     li.appendChild(link);
     taskList.appendChild(li);
     // console.log(li);
+
+    // storing items in LocalStorage.
+    storeLocalStorage(taskInput.value);
     taskInput.value ='';
     e.preventDefault();
 }
@@ -74,4 +106,18 @@ function filterTasks(e){
             task.style.display = 'none';
         }
     })
+}
+
+// function for storing items into local storage.
+function storeLocalStorage(taskValue)
+{
+    let tasks;
+    if(localStorage.getItem('tasks') === null){
+        tasks = [];
+    }
+    else{
+        tasks = JSON.parse(localStorage.getItem('tasks'));
+    }
+    tasks.push(taskValue);
+    localStorage.setItem('tasks',JSON.stringify(tasks));
 }
