@@ -46,7 +46,7 @@ function getTasks(e){
         link.innerHTML = '<i class="fa fa-remove"></i>';
         li.appendChild(link);
         taskList.appendChild(li);
-    })
+    });
 }
 
 function addTask(e){
@@ -79,10 +79,32 @@ function removeTask(e){
         if(confirm('Are you sure,you want to delete the Item ?',e.target.parentElement.parentElement.value))
         {
             e.target.parentElement.parentElement.remove();
+
+            // also remove task from the local storage.
+
+            removeTaskFromLocalStorage(e.target.parentElement.parentElement);
         }
     }
 }
 
+// remove task from LocalStorage
+function removeTaskFromLocalStorage(taskItem){
+    
+    let tasks;
+    if(localStorage.getItem('tasks') === null){
+        tasks = [];
+    }
+    else{
+        tasks = JSON.parse(localStorage.getItem('tasks'));
+    }
+    tasks.forEach(function(task,index){
+        if(taskItem.textContent === task){
+            tasks.splice(index,1);
+        }
+    });
+
+    localStorage.setItem('tasks',JSON.stringify(tasks));
+}
 //clearTasks function
 function clearTasks(e){
     // taskList.innerHTML = '';
@@ -91,6 +113,13 @@ function clearTasks(e){
     while(taskList.firstChild){
         taskList.removeChild(taskList.firstChild);
     }
+
+    clearTasksFromLocalStorage();
+}
+
+function clearTasksFromLocalStorage(e)
+{
+    localStorage.clear(); 
 }
 
 // for filter functions
@@ -105,7 +134,7 @@ function filterTasks(e){
         else{
             task.style.display = 'none';
         }
-    })
+    });
 }
 
 // function for storing items into local storage.
